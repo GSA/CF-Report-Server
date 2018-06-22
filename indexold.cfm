@@ -1,0 +1,3 @@
+<!--- <CFINCLUDE TEMPLATE="conf.cfm">
+<CFLOCATION URL="Cal.cfm?Month_Day=#CUR_DAY#&MONTH=#CUR_MONTH#&YEAR=#CUR_YEAR#">
+ --->
