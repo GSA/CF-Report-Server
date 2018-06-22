@@ -1,20 +1,11 @@
 
-<!--- 
 <CFIF IsDefined("cookie.ReptStore")>
 	<CFSET client.reptstore = "#Cookie.ReptStore#">	
 	<cfcookie name="reptstore" value="" expires="NOW">
 <CFelseif not IsDefined("client.reptstore")>
 	<CFSET Client.reptStore = 'CI'>
-</CFIF>		 
-<CFSET StoreID = "#client.ReptStore#"> --->
-
-<CFIF IsDefined("session.ReptStore")>
-	<!--- <CFSET session.ReptStore = "#session.ReptStore#"> --->
-<CFelse>
-	<CFSET session.ReptStore = "03">
-</CFIF>
-
-<CFSET StoreID = "#session.ReptStore#">
+</CFIF>	
+<CFSET StoreID = "#client.ReptStore#">
 
 
 

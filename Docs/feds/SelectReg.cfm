@@ -18,7 +18,10 @@ function LinkTo(form)
 			}
 </SCRIPT>
 </HEAD>
+
+
 <BODY text="maroon">
+
 Click region
 <FORM action="ChangeReg.cfm">
 	<SELECT

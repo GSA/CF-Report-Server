@@ -42,7 +42,7 @@
 <CFSET RootURL = #ServerUrl# & #ReportDir# & "/">
 <CFSET DateSelected = '#Year#' & '/' & '#doy2#'>
 <CFIF #DateSelected# GT '#Session.HistoryDate#'>
-	<CFSET RootDir = "d:\reports\docs\#ReportDir#\">
+	<CFSET RootDir = "T:\reports\docs\#ReportDir#\">
 	<cfelse>
 	<CFSET RootDir = "e:\#ReportDir#\">
 </cfif>
@@ -91,12 +91,12 @@
 	<CFLOOP query="contents">
 	<cfif #compdate# is #left(name, 4)#>
 		<CFSET FileName1 = RemoveChars("#Contents.name#", 1, 5)>
-		<CFSET FileName2 = Replacenocase("#filename1#", ".RTF", "")>
+		<CFSET FileName2 = Replace("#filename1#", ".RTF", "")>
 		<CFSET FileStore = #Left(#filename2#,2)#>
 		<CFSET FileName = RemoveChars("#filename2#", 1, 3)>
 	
 		<!--- <cfoutput>#FileName1#, #FileName2#, #fileName#<br></cfoutput> --->
-		<CFIF #FileStore# IS '#session.ReptStore#'>
+		<CFIF #FileStore# IS '#ReptStore#'>
 			<cfquery name="getreport" datasource="OnLineReports">
 				select	* from #ReportDir#reportname
 						Where reptfilename = '#FileName#'

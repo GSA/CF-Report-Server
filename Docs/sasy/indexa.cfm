@@ -1,18 +1,13 @@
 
-<!--- 
 <CFIF IsDefined("cookie.ReptRegion")>
-	<cfset session.reptregion = "#cookie.ReptRegion#">
+	<cfset client.reptregion = "#cookie.ReptRegion#">
 	<CfCOOKIE NAME="ReptRegion" VALUE="" expires="NOW">
 <CFelseif not isdefined("client.reptregion")>
-	<CFSET session.ReptRegion = "03">
-</CFIF>	 --->
+	<CFSET client.ReptRegion = "03">
+</CFIF>	
 
-<CFIF IsDefined("session.ReptRegion")>
-	<!--- <CFSET session.RegionNO = "#session.ReptRegion#"> --->
-<CFelse>
-	<CFSET session.ReptRegion = "03">
-	<!--- <CFSET session.ReptRegion = "03"> --->
-</CFIF>
+<CFSET RegionNO = "#client.ReptRegion#">
+
 
 
 

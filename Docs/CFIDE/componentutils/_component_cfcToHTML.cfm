@@ -1,26 +1,11 @@
 <cfscript>
-	isTypeInterface  = IsInterface(cd);
-	
-	if (isTypeInterface) {
-		ancestors = GetInterfaceAncestors(cd);
-		componentType = "Interface"	;
-		methods = StructNew();
-		methods = GetInterfaceMethods(cd,methods,true);
-		properties = StructNew();
-		interfaces = ArrayNew(1);
-	}
-	else {
-		ancestors = GetAncestors(cd) ;
-		componentType = "Component";
-		methods = GetMethods(ancestors) ;
-		properties = GetProperties(ancestors) ;
-		interfaces = GetImplementedInterfaces(cd);
-	}
+	ancestors = GetAncestors(cd) ;
+	methods = GetMethods(ancestors) ;
+	properties = GetProperties(ancestors) ;
 	
 	implementedMethodList = '' ;
 	inheritedMethodList = '' ;
 	baseMethodList = '' ;
-	
 	for ( name in methods ) {
 		if ( methods[name].implementedIn eq cd.name )
 			implementedMethodList = ListAppend( implementedMethodList, name ) ;
@@ -29,13 +14,12 @@
 		else
 			inheritedMethodList = ListAppend( inheritedMethodList, name ) ;
 	}
-	
 </cfscript>
 
 
 <cfoutput><html>
 <head>
-<title>#componentType# #ListLast(cd.name,'.')#</title>
+<title>Component #ListLast(cd.name,'.')#</title>
 <cfinclude template="_component_style.cfm">
 </head>
 <body style="padding-bottom : 800px;">
@@ -47,7 +31,7 @@
 
 <cfoutput>
 <font size="-2">#cd.name#</font><br>
-<font size="+1"><b>#componentType# #ListLast(cd.name,'.')#
+<font size="+1"><b>Component #ListLast(cd.name,'.')#
 <cfif StructKeyExists(cd,"displayName") and cd.displayName neq cd.name>(#cd.displayName#)</cfif>
 </b></font>
 </cfoutput>
@@ -57,44 +41,16 @@
 <cfoutput>
 <br><br><br>
 <table>
-</cfoutput>
-<cfif not isTypeInterface>
 <tr><td>hierarchy:</td><td>
-	<cfloop index="i" from="1" to="#ArrayLen(ancestors)#">
-	
-		<cfoutput>#RepeatString('&nbsp;',(i-1)*6)##GetLinkForType(ancestors[i].name, "LONG")#<br></cfoutput>
-		<cfset i=i+1>
-	
-	</cfloop>
-<cfelse>	
-<tr><td>extends:</td><td>
-	<cfset parentStr = "">
-	<cfloop index="i" from="1" to="#ArrayLen(ancestors)#">
-		<cfif i neq 1>								
-			<cfset parentStr = parentStr & ",">
-		</cfif>
-		<cfset parentStr = parentStr & #GetLinkForType(ancestors[i].name, "LONG")#>
-	</cfloop>
-	<cfoutput>#parentStr#</cfoutput>
-</cfif>
+</cfoutput>
+<cfloop index="i" from="1" to="#ArrayLen(ancestors)#">
+
+	<cfoutput>#RepeatString('&nbsp;',(i-1)*6)##GetLinkForType(ancestors[i].name, "LONG")#<br></cfoutput>
+	<cfset i=i+1>
+
+</cfloop>
 <cfoutput>
 </td></tr>
-<cfset numInterfaces = ArrayLen(interfaces)>
-<cfif numInterfaces gt 0 >
-	<tr>
-		<td>Implements:</td>
-		<td>
-			<cfset tmpStr="">
-			<cfloop index="i" from="1" to="#numInterfaces#">
-				<cfif i neq 1>								
-					<cfset tmpStr = tmpStr & ",">
-				</cfif>
-				<cfset tmpStr = tmpStr & #GetLinkForType(interfaces[i].name, "LONG")#>
-			</cfloop>
-			<cfoutput>#tmpStr#</cfoutput>
-		</td>
-	</tr>
-</cfif>
 <tr><td>path:</td>
 	<td>#cd.path#</td>
 </tr>
@@ -115,7 +71,6 @@
 	</cfloop><br>
 	<td>#list#</td>
 </tr>
-
 <tr><td>methods:</td>
 	
 	<cfset list = ''>
@@ -271,7 +226,6 @@
 	</td></tr>
 
 </cfloop>	
-
 </table>
 </cfoutput>
 

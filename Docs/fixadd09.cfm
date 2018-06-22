@@ -1,7 +1,7 @@
 
-<CFSET ServerURL = "http://159.142.133.74/reports/">
+<CFSET ServerURL = "http://159.142.4.59/reports/">
 <!--- this was to add S3 as a dir at lowest lever (4)  started on May first 2003 --->
-<CFSET RootDir = "d:\reports\docs\FSS19\">
+<CFSET RootDir = "T:\reports\docs\FSS19\">
 <CFSET Year = "2003">
 <CFSET Julian = 304>	
 <cfquery name="getdate" datasource="omc" dbtype="ODBC">

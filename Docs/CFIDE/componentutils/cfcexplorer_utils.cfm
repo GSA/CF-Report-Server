@@ -130,9 +130,6 @@ function browseForComponents ( package, dir, cfcRoot, ignoreShadowedPackages ) {
 	var packagePrefix = '' ;
 	var fileNames = "" ;
 	var dirPath = "" ;
-	var isAuthorized = true;
-	factory = CreateObject("java", "coldfusion.server.ServiceFactory");
-	security = factory.getSecurityService();
 
 	isShadowed = ignoreShadowedPackages and StructKeyExists( packages, package ) ;
 	
@@ -161,18 +158,11 @@ function browseForComponents ( package, dir, cfcRoot, ignoreShadowedPackages ) {
 				// a directory
 				file = CreateObject( "java", "java.io.File" ) ;
 				file.init( dirPath & name ) ;
-				if(security.isSandboxSecurityEnabled())
-				{
-					isAuthorized = hasAccessToFolder( dirPath & name );
-				}	
-				if(isAuthorized)
-				{
-					if ( file.isDirectory() ) 
-					{
-						browseForComponents ( packagePrefix & name, 
+
+				if ( file.isDirectory() ) {
+					browseForComponents ( packagePrefix & name, 
 						file, cfcRoot, ignoreShadowedPackages ) ;
-					}
-				}
+				}	
 			
 			} else if ( ListLast( name, '.' ) eq 'cfc' ) {
 				// instantiate as java File and check that it is 
@@ -194,42 +184,6 @@ function browseForComponents ( package, dir, cfcRoot, ignoreShadowedPackages ) {
 	}
 }
 
-/*
- * hasAccessToFolder -  returns true if the current logged in user has access to the specific file.
- *
- * @param filename		name of the file
- * @return				boolean
-*/
-function hasAccessToFolder(filename)
-{
-	var fileObj = CreateObject("java", "java.io.File").init(javacast("string", filename));
-	var userid = getCurrentUser();
-	factory = CreateObject("java", "coldfusion.server.ServiceFactory");
-	security = factory.getSecurityService();
-	if(security.getRootAdminUserId() eq userid) 
-	{
-		return true;
-	}
-	else
-	{
-		authuser = security.getAuthorizedUser(userid);
-		return authuser.getAuthorizedFolders().isAuthorized(fileObj);
-	}
-}
-
-/*
- * getCurrentUser -  returns the id of the current logged in user
- *
- * @return	string
-*/
-
-function getCurrentUser()
-{
-	userutils = createObject("java", "coldfusion.security.UserUtils");
-	userid = userutils.getAuthUser();
-	return userid;
-	
-}
 </cfscript>	
 
 

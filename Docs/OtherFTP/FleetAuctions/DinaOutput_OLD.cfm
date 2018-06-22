@@ -44,7 +44,7 @@
 
 
 <!--- 
-http://reports.fss.gsa.gov/otherftp/fleetauctions/dinaoutput.cfm
+http://159.142.4.53/otherftp/fleetauctions/dinaoutput.cfm
 
 CarInfo.SaleDate = AuctionSchedule.AuctionStart
 DATEPART(YEAR, SAMPLE_DATE) = '2003' AND 

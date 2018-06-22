@@ -1,3 +1,11 @@
+<HTML>
+
+
+<HEAD>
+
+</head>
+
+
 
 <!----------------------------------------------------------------
 	The below login form checks for the existence of Username and
@@ -6,9 +14,10 @@
 ------------------------------------------------------------------>
 <CFIF action is 'Enter'>
 <body>
-	<FORM ACTION="pass-bottom.cfm?action=validate&file=<cfoutput>#url.file#&ext=#url.ext#</cfoutput>" METHOD=POST>
+	<FORM ACTION="pass-bottom.cfm?action=validate" METHOD=POST>
 	<PRE>
-	    <table>
+	
+	     <table>
 	     <tr>
 		 	<td >Password </td>
 			<td><INPUT TYPE="password" NAME="Password" tabindex="1"></td>
@@ -21,12 +30,12 @@
 	</FORM>
 <CFELSEIF action is 'validate'>
 	
-<!--- 	<CFDIRECTORY action="list" directory="#session.directory#" name="contents" sort="name" filter="*.#url.extension#"> --->
+	<CFDIRECTORY action="list" directory="#session.directory#" name="contents" sort="name" filter="*.#session.extension#">
 
 	<cfquery name="getreport" datasource="OnLineReports">
 		select	* from fss19reportname
 		where catagorycode = '#session.reportcatagory#'
-			AND alias = '#url.file#'
+			AND reptfilename = '#session.FileName#'
 			AND Password = '#Password#'
 	</cfquery>
 	<cfif getreport.recordcount is 0>
@@ -34,26 +43,20 @@
 	     <tr>
 		 	<td><font size="+1">Invalid Password </font></td>
 		</tr>
-		<!--- <tr><td><cfoutput>catagorycode = #session.reportcatagory#<br>
+		<tr><td><!--- <cfoutput>catagorycode = #session.reportcatagory#<br>
 				reptfilename = #session.FileName#<br>
-				ext = #url.ext#<br>
-				Password = #Password#</cfoutput></td></tr> --->
+				Password = #Password#</cfoutput> ---></td></tr>
 		<tr>	
-			<td><a href="pass-bottom.cfm?action=enter&file=<cfoutput>#url.file#</cfoutput>">Click here to continue</a></td>
+			<td><a href="pass-bottom.cfm?action=enter">Click here to continue</a></td>
 		</tr>
 		</table>	
 	<cfelse>
 		<table>
-		<!--- <tr><td><cfoutput>catagorycode = #session.reportcatagory#<br>
-				reptfilename = #getreport.reptFileName#<br>
-				ext = #url.ext#<br>
-				Password = #Password#</cfoutput> ---></td></tr> --->
-		<tr>	
 	     <tr>
 		 	<td><font size="+1">Password accepted</font> </td>
 		</tr>
 		<tr>	
-			<td><a href="<cfoutput>#session.LinkURL##getreport.reptFileName#.#url.ext#</cfoutput>" onMouseOver="window.Status = 'Hello!';return true" onMouseOut="window.defaultStatus = 'Hello!';return true" onClick="window.Status = 'Hello!';return true" onkeyup="window.Status = 'Hello!';return true" onblur="window.Status = 'Hello!';return true" target="Frame-btm" >Click here to load the report</a></td>
+			<td><a href="<cfoutput>#session.LinkURL##session.FileName#.#session.extension#</cfoutput>" onMouseOver="window.Status = 'Hello!';return true" onMouseOut="window.defaultStatus = 'Hello!';return true" onClick="window.Status = 'Hello!';return true" onkeyup="window.Status = 'Hello!';return true" onblur="window.Status = 'Hello!';return true" target="Frame-btm" >Click here to load the report</a></td>
 		</tr>
 		</table>	
 	</cfif>	

@@ -2,10 +2,8 @@
 
 <HTML>
 <CFIF #ParameterExists(Regionxx)# IS "YES">
-	<cfset client.RegionCode = "#Regionxx#">
-	<cfset session.RegionCode = "#Regionxx#">
+	<cfset client.regioncode = "#Regionxx#">
 </CFIF>
-
 
 <HEAD>
 	<TITLE>Post a Region Change</TITLE>
@@ -13,7 +11,7 @@
 <script language="JavaScript">
 
 function LinkTo()
- 			{ 
+ 			{
 				var target = "_top"	
 				var xurl = "indexa.cfm"
 				window.open(xurl,target)

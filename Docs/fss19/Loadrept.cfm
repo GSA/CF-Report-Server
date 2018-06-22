@@ -43,18 +43,10 @@ msgWindow=window.open(xurl,'JavaScriptIt','toolbar= 0,location= 0,directories= 0
 <CFSET DateSelected = '#Year#' & '/' & '#doy2#'>
 
 <CFIF #DateSelected# GT '#Session.HistoryDate#'>
-	<CFSET RootDir = "d:\reports\docs\#ReportDir#\">
+	<CFSET RootDir = "T:\reports\docs\#ReportDir#\">
 <cfelse>
 	<CFSET RootDir = "e:\#ReportDir#\">
 </cfif> 
-
-<!--- temp begin NOW COMMENTED OUT
-    <CFIF #Year# EQ '2015'>
-	<CFSET RootDir = "d:\reports\docs\#ReportDir#\">
-    </cfif>
-temp end --->
-
-
 
 <CFSET session.directory = #RootDir# & "#session.ReptYear#" & "\"  & "#ReptDate#" & "\" & "0" & "#session.regionCode#"  & "\" & "#session.reportcatagory#">
 <CFSET session.linkurl = #RootURL# & "#session.ReptYear#" & "/"  & "#ReptDate#" & "/" & "0" & "#session.regionCode#" & "/" & "#session.reportcatagory#" & "/">
@@ -279,7 +271,7 @@ temp end --->
 						</cfif>
 					<CFELSE>	
 								
-						<FONT SIZE="2"><a href="passset.cfm?file=#getreport.alias#&ext=txt" target="_new">#getreport.alias#</a></FONT>
+						<FONT SIZE="2"><a href="passset.cfm?file=#getreport.alias#&ext=RTF" target="_new">#getreport.alias#</a></FONT>
 					</CFIF>
 					</TD>
 				<TD WIDTH="70%"><FONT SIZE="1">#ReportNm#</FONT></TD>

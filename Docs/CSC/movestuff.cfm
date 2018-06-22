@@ -6,7 +6,7 @@
 </CFQUERY> 
 <CFSET RootURL = #ServerUrl# & #ReportDir# & "/">
 
-<CFSET RootDir = "d:\reports\docs\#ReportDir#\">
+<CFSET RootDir = "T:\reports\docs\#ReportDir#\">
 	
 
 <CFSET Directory = #RootDir# & "#ReptYear#" & "\">

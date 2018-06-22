@@ -1,8 +1,4 @@
-<!--- 
-* Copyright 2003-2006 Adobe Macromedia Software LLC. All rights reserved.
---->
-<cfcomponent>
-<cfsetting enablecfoutputonly="yes" showdebugoutput="no">
+<cfcomponent><cfsetting enablecfoutputonly="yes" showdebugoutput="no">
 
 	<!--- where we store our data in the server scope --->
 	<cfset CACHE_ROOT = "cfc">
@@ -17,12 +13,8 @@
 		hint="Returns array of component root directories. Each root directory is specified by its physical path using forward slashes a no trailing slash.">
 
 		<cfscript>
-			var authorizedFolders = "";
-			var file = "";
-			
 			factory = CreateObject("java", "coldfusion.server.ServiceFactory");
 			runtime = factory.getRuntimeService();
-			security = factory.getSecurityService();
 			customTagRoots = runtime.getCustomtags();
 			mappings = runtime.getMappings() ;
 						
@@ -44,19 +36,7 @@
 				root = StructNew() ;
 				root.prefix = prefix  ;
 				root.physicalPath = NormalizePath( mappings[virtualDirs[i]] ) ;
-				// for multiuser logins, check if the current user has access to folders
-				if(security.isSandboxSecurityEnabled())
-				{
-					if(hasAccessToFolder(root.physicalPath))
-					{
-						ArrayAppend(roots, root);
-					}
-				}
-				else
-				{
-					ArrayAppend(roots,root);
-				}
-				
+				ArrayAppend( roots, root ) ;
 			}
 			
 			// add webroot
@@ -66,18 +46,7 @@
 				root = StructNew() ;
 				root.prefix = '' ;
 				root.physicalPath = NormalizePath( webroot ) ;
-				// for multiuser logins, check if the current user has access to folders
-				if(security.isSandboxSecurityEnabled())
-				{
-					if(hasAccessToFolder(root.physicalPath))
-					{
-						ArrayAppend(roots, root);
-					}
-				}
-				else
-				{
-					ArrayAppend(roots,root);
-				}
+				ArrayAppend( roots, root ) ;			
 			}
 			
 			// get custom tag roots
@@ -88,45 +57,22 @@
 				// temporary workaround
 				root.physicalPath = NormalizePath( 
 					Replace( CustomTagRoots[ctRoot], "##server.coldfusion.rootdir##", installationRoot ) ) ;
-				// for multiuser logins, check if the current user has access to folders
-				if(security.isSandboxSecurityEnabled())
-				{
-					if(hasAccessToFolder(root.physicalPath))
-					{
-						ArrayAppend(roots, root);
-					}
-				}
-				else
-				{
-					ArrayAppend(roots,root);
-				}
+				ArrayAppend( roots, root ) ;
 			}
 			return roots ;
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="getcfcs" returnType="array" access="remote"
-		hint="Returns array of component metadata structs. Each metadata struct contains: <ul><li>name - full component name</li><li>package - package name</li><li>path - physical path of the component with forward slashes</li><li>cfcroot - physical path of the root under which this component was found (all forward slashes, no trailing slash). If sandbox security is enabled, only those components that are present in the sandboxes accessible to the user are retrieved.</li></ul>">
+		hint="Returns array of component metadata structs. Each metadata struct contains: <ul><li>name - full component name</li><li>package - package name</li><li>path - physical path of the component with forward slashes</li><li>cfcroot - physical path of the root under which this component was found (all forward slashes, no trailing slash)</li></ul>">
 
 		<cfargument name="refreshCache" type="boolean" default="no">
 
 		<cfscript>
-			var key = "";
-			factory = CreateObject("java", "coldfusion.server.ServiceFactory");
-			security = factory.getSecurityService();
-			if(security.isSandBoxSecurityEnabled())
-			{
-				key = "getcfcs"&getCurrentUser();
-			}
-			else
-			{
-				key = "getcfcs";
-			}
-			readFromCache = checkCache(key) and not refreshCache ;
-	
+			
+			readFromCache = checkCache("getcfcs") and not refreshCache ;
 			if ( readFromCache ) {
-				return getCache(key) ;
-				
+				return getCache("getcfcs") ;
 			}
 			else {
 				roots = getComponentRoots() ;
@@ -153,7 +99,7 @@
 					ArrayAppend( result, components[name] ) ;
 				}
 				
-				setCache(key, result) ;
+				setCache("getcfcs", result) ;
 				
 				return result ;
 			}
@@ -163,7 +109,7 @@
 	
 	
 	<cffunction name="getcfcsinmcdl" returnType="struct" output="false" access="remote"
-		hint="Returns associative array (struct) where keys are full component names and values are MCDL documents representing the components. If sandbox security is enabled, the struct contains the keys (component names) that are present in the sandboxes that can be accessed by the current user.">
+		hint="Returns associative array (struct) where keys are full component names and values are MCDL documents representing the components.">
 
 		<cfargument name="refreshCache" type="boolean" default="no" />
 
@@ -205,34 +151,6 @@
 
 	
 	
-	<cffunction name="getCFCMetaData" returnType="struct" output="no" access="remote"
-		hint="Returns MCDL document representing the specified component.">
-
-		<cfargument name="name" type="string" required="no" />
-		<cfargument name="path" type="string" required="no" />
-		
-		<cftry>
-			<cfscript>
-				if ( IsDefined('arguments.path') and arguments.path neq '' ) 
-				{
-					proxy = CreateObject( "java", "coldfusion.runtime.TemplateProxyFactory" ) ;
-					comp = proxy.ResolvePath( HTMLEditFormat(arguments.path), getPageContext() ) ;
-					return getMetaData(comp);					
-				} 
-				else if( isDefined('arguments.name') )
-				{
-					comp = CreateObject( "component", HTMLEditFormat(name) ) ;
-					return getMetaData(comp);					
-				}
-			</cfscript>
-		<cfcatch type="coldfusion.runtime.CfJspPage$NoSuchTemplateException">
-			<cfoutput><h4>Component not found</h4>
-			The component definition file for component '#HTMLEditFormat(name)#' cannot be found on this server.</cfoutput>
-		</cfcatch>
-		</cftry>
-	</cffunction>
-	
-	
 	<cffunction name="getcfcinmcdl" returnType="string" output="no" access="remote"
 		hint="Returns MCDL document representing the specified component.">
 
@@ -246,34 +164,33 @@
 	</cffunction>
 	
 	
-	<cffunction name="getcfcinhtml" access="remote" returnType="void"
+	<cffunction name="getcfcinhtml" access="remote"
 		hint="Generates html descriptor of a component with the specified name or URI path as the http response.">
 		<cfargument name="name" type="string" required="yes" />
 		<cfargument name="path" type="string" required="no" />
 		
 		<cftry>
 			<cfscript>
-				proxy = CreateObject( "java", "coldfusion.runtime.TemplateProxyFactory" ) ;
 				if ( IsDefined('arguments.path') and arguments.path neq '' ) {
-					comp = proxy.ResolvePath( HTMLEditFormat(arguments.path), getPageContext() ) ;
+					proxy = CreateObject( "java", "coldfusion.runtime.TemplateProxyFactory" ) ;
+					comp = proxy.ResolvePath( arguments.path, getPageContext() ) ;
 				} else {
-					comp = proxy.resolveName(HTMLEditFormat(name),getPageContext());
+					comp = CreateObject( "component", name ) ;
 				}
-				proxy.verifyInterfaceImplementation(comp,getPageContext());
 				
 				utils = CreateObject( "component", "utils" ) ;
 				WriteOutput( utils.cfcToHTML(comp) ) ;
 			</cfscript>
 		<cfcatch type="coldfusion.runtime.CfJspPage$NoSuchTemplateException">
 			<cfoutput><h4>Component not found</h4>
-			The component definition file for component '#HTMLEditFormat(name)#' cannot be found on this server.</cfoutput>
+			The component definition file for component '#name#' cannot be found on this server.</cfoutput>
 		</cfcatch>
 		</cftry>
 	</cffunction>
 
 
 	<cffunction name="getcfctree" returnType="struct" access="remote"
-		hint="Returns associative array (struct) where keys are physical paths for each component root and values are associative arrays of packages found under each root. Each associative array of packages is a struct where keys are package names and values are arrays of short component names belonging to a package. If sandbox security is enabled, the returned struct contains the keys (component roots) that are present in the folders that can be accessed by the current user.</li></ul>">
+		hint="Returns associative array (struct) where keys are physical paths for each component root and values are associative arrays of packages found under each root. Each associative array of packages is a struct where keys are package names and values are arrays of short component names belonging to a package.</li></ul>">
 
 		<cfargument name="refreshCache" type="boolean" default="no"  />
 
@@ -306,7 +223,7 @@
 
 
 	<cffunction name="exists" returnType="boolean" output="no" access="remote"
-		hint="Returns true if component with specifed name exists, false otherwise. This method always refreshes the internal cfc cache. If sandbox security is enabled, this function checks for the availability of components in the sandboxes that the current user has access to.">
+		hint="Returns true if component with specifed name exists, false otherwise. This method always refreshes the internal cfc cache.">
 
 		<cfargument name="name" type="string" required="yes" />
 

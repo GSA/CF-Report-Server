@@ -63,7 +63,7 @@
 				<cfloop condition="#searchyear# LTE #toyear#"> 
 					<!--- Establish proper directory to use for search --->
 					<cfif searchyear is '#currentyear#'>		
-						<CFSET RootDir = "d:\reports\docs\#systemdir#\#SearchYear#"> <!--- set current year volume --->	
+						<CFSET RootDir = "T:\reports\docs\#systemdir#\#SearchYear#"> <!--- set current year volume --->	
 					<CFELSE>	
 						<CFSET RootDir = "e:\#systemdir#\#searchYear#">		<!--- set to History volume --->
 					</cfif>					

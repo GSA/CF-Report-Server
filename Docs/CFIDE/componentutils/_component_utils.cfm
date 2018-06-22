@@ -1,4 +1,5 @@
 <cfscript>
+
 	function GetAncestors(cd) {
 		var ancestors = ArrayNew(1);
 		if ( StructKeyExists( cd, 'extends' ) )
@@ -8,61 +9,6 @@
 		
 		return ancestors ;
 	
-	}
-
-	/**
-	*	Gets ancestors (interfaces) from given interface metadata
-	*	It only get direct ancestors.
-	*
-	*	@param cd Meta data of the interface whose ancestors are to be obtained.
-	*	@returns ancestors - Array of meta data of direct ancestors
-	*/	
-	function GetInterfaceAncestors(cd) {
-		var ancestors = ArrayNew(1);
-		
-		if (not IsStruct(cd))
-			return ancestors;
-			
-		if (StructKeyExists(cd,'extends')) {
-			for (intf in cd.extends)
-			{
-				ArrayAppend(ancestors,cd.extends[#intf#]);
-			}
-		} 
-		return ancestors;
-	}
-
-	/**
-	*	Checks if given metadata belongs to interface or component
-	* 	
-	*	@param cd Metadata of component or interface
-	*	@return true if it is an interface else false
-	*/
-	function IsInterface(cd) {
-		if (IsStruct(cd) and StructKeyExists(cd,'type') and cd.type eq "interface")
-			return true;
-		return false;
-	}
-
-	/**
-	*	Gets array of only direct imlpemented interfaces.
-	
-	*	@param cd Metadata of the Component
-	*	@return Array of metadata (Struct) of direct implemented interfaces
-	*/	
-	function GetImplementedInterfaces(cd) {
-		var interfaces = ArrayNew(1);
-		
-		if (not IsStruct(cd)) 
-			return interfaces;
-			
-		if (StructKeyExists(cd,'implements')) {
-			for (itf in cd.implements) {
-				ArrayAppend(interfaces,cd.implements[#itf#]);
-			}
-		}
-			
-		return interfaces;
 	}
 
 	function GetMethods(ancestors) {
@@ -88,47 +34,7 @@
 		
 		}	
 		return methods ;
-	}
 	
-	/**
-	*	Gets methods of given interface metadata and its parents. Gets methods recursively
-	
-	*	@param cd - Metadata of an interface
-	*	@param methods - Struct of methods obtained so far. 
-	*	@param originalInterface - A flag indicating if this method is being called for 
-	*							the original interface for which are obtaining methods. 
-	*							For recursive calls, this flag is set to false.
-	*	@return Struct. Key is method name. Value is a Struct contining metadata of the method,
-	*					and name of the interface where it is defined
-	*					
-	*/
-	function GetInterfaceMethods(cd, methods, originalInterface) {
-		var curMethod = "";
-		
-		if (not IsStruct(cd))
-			return methods;
-			
-		if (StructKeyExists(cd,'extends')) {
-			for (intf in cd.extends)
-			{
-				methods = GetInterfaceMethods(cd.extends[#intf#],methods,false);
-			}
-		} 
-				
-		if ( StructKeyExists( cd, 'functions' ) ) {
-			for ( j=1; j lte ArrayLen( cd.functions ); j=j+1 ) {
-				curMethod = StructNew() ;
-				curMethod.metadata = cd.functions[j] ;
-				curMethod.implementedIn = cd.name ;
-				if ( originalInterface 								// don't exclude any method 1)from this
-					or not StructKeyExists( curMethod.metadata, 'access' ) 	// 2)that does not have 'access' attribute
-					or curMethod.metadata.access neq 'private' ) {			// 3)that does not have access='private'
-					methods[curmethod.metadata.name] = curMethod ;
-				}
-			}//of for (j = 1; j lte ArrayLen(currAncestorchain); j = j+1)
-		}
-		
-		return methods;
 	}
 
 	function GetProperties(ancestors) {

@@ -89,7 +89,7 @@
 				<cfloop condition="#searchyear# LTE #toyear#"> 
 					<!--- Establish proper directory to use for search --->
 					<cfif searchyear is '#currentyear#'>		
-						<CFSET RootDir = "d:\reports\docs\#systemdir#\#SearchYear#"> <!--- set current year volume --->	
+						<CFSET RootDir = "T:\reports\docs\#systemdir#\#SearchYear#"> <!--- set current year volume --->	
 					<CFELSE>	
 						<CFSET RootDir = "e:\#systemdir#\#searchYear#">		<!--- set to History volume --->
 					</cfif>					
@@ -192,16 +192,16 @@
 									<td>#dateformat(test.datelastmodified, "mm/dd/yy")#</td>
 								</TR>	
 								<cfif reqcopy is 'Y'>
-									<cffile action="copy" source="#Directory1#\#test.name#" destination="d:\reports\docs\copies\#DateFormat(thisdate, "mmddyy")##test.name#">									
+									<cffile action="copy" source="#Directory1#\#test.name#" destination="T:\reports\docs\copies\#DateFormat(thisdate, "mmddyy")##test.name#">									
 								</cfif>
 								</cfoutput>
 								<!--- BEGIN:: Adds-ons NGL:: Copy file into new directory called exportresult --->
 								<cfif IsDefined("form.exportresult") and form.exportresult is 'Copy to Result to Temp Folder' and len(trim(test.name)) gt 0>							
-									<cfset dest_full_path_name = "d:\reports\docs\temp\"> <!--- Directory where result will be stored --->
+									<cfset dest_full_path_name = "T:\reports\docs\temp\"> <!--- Directory where result will be stored --->
 									<cfset src_full_path_name = "#directory1#">
 									<cfset file_to_copy = "#test.name#">
 									
-									<cffile action="copy" source="#src_full_path_name#\#file_to_copy#" destination="d:\reports\docs\copies\#DateFormat(thisdate2, "mmddyy")##test.name#">
+									<cffile action="copy" source="#src_full_path_name#\#file_to_copy#" destination="T:\reports\docs\copies\#DateFormat(thisdate2, "mmddyy")##test.name#">
 								</cfif>
 								<!--- END:: Adds-ons NGL:: Copy file into new directory called exportresult --->		
 							</cfloop>

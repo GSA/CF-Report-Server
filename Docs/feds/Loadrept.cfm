@@ -4,7 +4,7 @@
 <HEAD>
 <TITLE>FEDS Load the url and go</TITLE>
 <CFSET PreviousURL = #HTTP_REFERER#>
-<CFSET MainRegion = '#session.ReptRegion#'>
+<CFSET MainRegion = '#ReptRegion#'>
 <CFIF #ParameterExists(Month_Day)# IS "YES">
 	<CFSET Doy2 = #Doy#>
 		<CFIF #Doy# LT 10>
@@ -25,45 +25,41 @@
 		</CFIF>
 	<CFSET ReptDate = #Month2# & #Month_Day2# & #Year2# & "." & #Doy2#>
 	<CFSET Selected = "#month2#/#month_day2#/#YEAR#">
-	<cfset session.reptyear = "#YEAR#">
+	<cfset client.reptyear = "#Year#">
 	<CFSET DateSelected = "#YEAR#/#doy2#">
-
 </CFIF>
 <CFIF IsDefined("Type")>
 	<CFIF Type is 'asreq'>
-			<cfset session.reptyear = "#YEAR#">
-		<CFSET session.ReptRegion = "ASREQ">
+		<CFSET ReptRegion = "ASREQ">
 		<CFSET ReptDate = #AsReqMo#>
-		<CFSET Selected = "#AsReqMo#/#session.ReptYear#">
-		<CFSET DateSelected = "#session.ReptYear#/#AsReqMo#">
+		<CFSET Selected = "#AsReqMo#/#client.ReptYear#">
+		<CFSET DateSelected = "#ReptYear#/#AsReqMo#">
 		<CFSET PreviousURL = #HTTP_REFERER#>	
 	<CFELSEIF type is 'allregions'>
-			<cfset session.reptyear = "#YEAR#">
-		<CFSET session.ReptRegion = "NW">
+		<CFSET ReptRegion = "NW">
 		<CFSET ReptDate = #AsReqMo#>
-		<CFSET Selected = "#AsReqMo#/#session.ReptYear#">
-		<CFSET DateSelected = "#session.ReptYear#/#AsReqMo#">
+		<CFSET Selected = "#AsReqMo#/#client.ReptYear#">
+		<CFSET DateSelected = "#ReptYear#/#AsReqMo#">
 		<CFSET PreviousURL = #HTTP_REFERER#>
 	</CFIF>
 </cfif>
 <CFSET RootURL = #ServerUrl# & #ReportDir# & "/">
 <CFIF #DateSelected# GT '#Session.HistoryDate#'>
-	<CFSET RootDir = "d:\reports\docs\#ReportDir#\">
+	<CFSET RootDir = "T:\reports\docs\#ReportDir#\">
 	<cfelse>
 	<CFSET RootDir = "e:\#ReportDir#\">
 </cfif>
 
-
-<CFIF #ParameterExists(session.ReptYear)# IS "YES" AND #ParameterExists(session.ReptRegion)# IS "YES">
-	<CFSET Directory = #RootDir# & "#session.ReptYear#" & "\" & "#session.ReptRegion#" & "\fss23" & "\" & "#ReptDate#" & "\">
-	<CFSET LinkUrl = #RootURL# & "#session.ReptYear#" & "/" & "#session.ReptRegion#" & "/" & "fss23/" &  "#ReptDate#" & "/">
+<CFIF #ParameterExists(client.ReptYear)# IS "YES" AND #ParameterExists(client.ReptRegion)# IS "YES">
+	<CFSET Directory = #RootDir# & "#ReptYear#" & "\" & "#ReptRegion#" & "\fss23" & "\" & "#ReptDate#" & "\">
+	<CFSET LinkUrl = #RootURL# & "#ReptYear#" & "/" & "#ReptRegion#" & "/" & "fss23/" &  "#ReptDate#" & "/">
 </CFIF>
 <CFDIRECTORY action="list" directory="#directory#" name="contents" sort="name" filter="*.rtf">
 
 </HEAD>
 
 <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
-
+		
 <cfoutput>
 <!--- Region = #mainRegion#<br>
 selected date: #DateSelected# history date: #Session.HistoryDate#<br>
@@ -107,8 +103,7 @@ LinkURL = #linkurl#<br>  --->
 					<CFSET Filenamex = 'SKIP'>	
 				</cfif>
 				
-				<CFSET FileName = ReplaceNoCase("#FileNamex#", ".RTF", "")>
-				
+				<CFSET FileName = Replace("#FileNamex#", ".RTF", "")>
 				<CFIF #Len(FileName)# GT 8>
 					<cfset stpt = #Len(FileName)# - 3>
 					<Cfset filedate = Right(FileName, 4)>

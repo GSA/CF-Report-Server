@@ -1,5 +1,3 @@
-<cfapplication name="componentutils" scriptprotect="form,url">
-
 <cfsetting showdebugoutput="no">
 <cfset factory = createObject( "java", "coldfusion.server.ServiceFactory" )>
 <cfset request.security = factory.securityService>
@@ -26,60 +24,27 @@
 				// listLast() bug forces us to do it in this way
 				pos = Find( ':', credentials.toString() ) ;
 				if ( pos neq 0 )
-				{
-					// Incase of multiuser RDS, the username will also be sent in the header. Hence, retrieve the user.
-					user = RemoveChars(credentials.toString(), pos, credentials.toString().length());
 					password = RemoveChars( credentials.toString(), 1, pos ) ;
-				}
 			}
 			// check the form password field
 			else if ( IsDefined('form.j_password') )
 			{
 				password = form.j_password ;
-				if (IsDefined('form.rdsUserid'))
-				{
-					user = form.rdsUserid;
-				}
-				else
-				{
-					//if singleRDSpassword enabled, set the password value to user.
-					if(request.security.getUseSingleRdsPassword())
-					{
-						user = password;
-					} 
-				}
 			}
-
+			
 			if ( IsDefined('password') )
 			{
-				if (request.security.getUseSingleRdsPassword())
-				{
-					authorized = request.security.checkRDSPassword( password ) ;
-					if ( not authorized ) 
-					{	// try admin password
-						authorized = request.security.checkAdminPassword( password ) ;
-					}
-				} 
-				else
-				{
-					if (IsDefined('user') AND len(trim(user)))
-					{
-						authorized = request.security.checkRDSUserIdPassword(user, password) AND request.security.canAccessRDS(user);
-					} else {
-						NullUserIdEntered = true;
-					}
-				}
-				
-				if (not authorized)
-				{
-					InvalidUserIdOrPasswordEntered = true;
-				}
+				authorized = request.security.checkRDSPassword( password ) ;
 					
+				if ( not authorized ) {
+					authorized = request.security.checkAdminPassword( password ) ;
+					invalidPasswordEntered = "thatsright" ;
+				}
 			}
 		</cfscript>
 		
 		<cfif authorized>
-			<cfloginuser roles="RDSUser" name="#user#" password="#password#">		
+			<cfloginuser roles="RDSUser" name="#password#" password="#password#">		
 		</cfif>
 
 	</cflogin>

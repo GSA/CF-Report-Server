@@ -2,7 +2,7 @@
 
 <HTML>
 <CFIF IsDefined("RegionNox")>
-	<cfset session.reptregion = "#RegionNOx#">
+	<cfset client.reptregion = "#RegionNOx#">
 </CFIF>
 
 <HEAD>

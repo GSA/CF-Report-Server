@@ -41,7 +41,7 @@
 <CFSET RootURL = #ServerUrl# & #ReportDir# & "/">
 <CFSET DateSelected = '#Year#' & '/' & '#doy2#'>
 <CFIF #DateSelected# GT '#Session.HistoryDate#'>
-	<CFSET RootDir = "d:\reports\docs\#ReportDir#\">
+	<CFSET RootDir = "T:\reports\docs\#ReportDir#\">
 	<cfelse>
 	<CFSET RootDir = "e:\#ReportDir#\">
 </cfif>
@@ -110,7 +110,7 @@
 			<CFSET newName = reverse(iname)>
 			
 			<CFSET FileName1 = RemoveChars("#newName#", 1, 5)>
-			<CFSET FileName2 = Replacenocase("#filename1#", ".RTF", "")>
+			<CFSET FileName2 = Replace("#filename1#", ".RTF", "")>
 			<CFIF #Left(#filename2#,3)# IS 'PRO'>
 				<CFSET FileName = Left(#fileName2#, #Len(FileName2)# - 3)>
 			<CFELSE>	
@@ -122,7 +122,7 @@
 			<CFSET FileRegion = left(FileRegx, 2)>
 			
 			<!--- <cfoutput>#FileName2#, #fileName#<br></cfoutput> --->
-			<CFIF #FileRegion# IS '#session.ReptRegion#'>
+			<CFIF #FileRegion# IS '#ReptRegion#'>
 				<cfquery name="getreport" datasource="OnLineReports">
 					select	* from #ReportDir#reportname
 							Where reptfilename = '#FileName#'
@@ -155,7 +155,7 @@
 			</cfif>
 		<CFELSE>
 			<CFSET FileName1 = RemoveChars("#Contents.name#", 1, 5)>
-			<CFSET FileName2 = Replacenocase("#filename1#", ".RTF", "")>
+			<CFSET FileName2 = Replace("#filename1#", ".RTF", "")>
 			<CFIF #Left(#filename2#,3)# IS 'PRO'>
 				<CFSET FileName = Left(#fileName2#, #Len(FileName2)# - 3)>
 			<CFELSE>	
@@ -165,7 +165,7 @@
 			<CFSET FileRegx = SpanExcluding("#filename3#", "-")>
 			<CFSET Fileregion = Reverse(fileregx)>
 			<!--- <cfoutput>#FileName2#, #fileName#<br></cfoutput> --->
-			<CFIF #FileRegion# IS '#session.ReptRegion#'>
+			<CFIF #FileRegion# IS '#ReptRegion#'>
 				<cfquery name="getreport" datasource="OnLineReports">
 					select	* from #ReportDir#reportname
 							Where reptfilename = '#FileName#'

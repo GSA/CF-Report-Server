@@ -41,16 +41,10 @@
 </CFIF>
 
 <CFIF #DateSelected# GT '#Session.HistoryDate#'>
-	<CFSET RootDir = "d:\reports\docs\#ReportDir#\">
+	<CFSET RootDir = "T:\reports\docs\#ReportDir#\">
 <cfelse>
-	<CFSET RootDir = "e:\#ReportDir#\">	
+	<CFSET RootDir = "e:\#ReportDir#\">
 </cfif>
-
-<!--- temp begin NOW COMMENTED OUT
-    <CFIF #Year# EQ '2015'>
-	<CFSET RootDir = "d:\reports\docs\#ReportDir#\">
-    </cfif>
-temp end --->
 
 <CFSET Directory = #RootDir# & "#Year#" & "\" & "#session.regionCode#" & "\" & #session.ReportCatagory# & "\" & "#ReptDate#" & "\">
 <CFSET LinkUrl = #RootURL# & "#Year#" & "/" & "#session.regionCode#" & "/"  & #session.ReportCatagory# & "/" &  "#ReptDate#" & "/">
@@ -69,7 +63,7 @@ temp end --->
 </HEAD>
 
 <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
-<!--- <cfdump var="#contents#">	 --->
+		
 <cfoutput>
 <!--- selected date: #DateSelected# history date: #Session.HistoryDate#<br>
 Directory = #directory#<br>
@@ -79,8 +73,6 @@ LinkURL = #linkurl#<br>  --->
 </cfoutput>
 
 <UL>
-
-
 <table width="610" border="1" cellspacing="0" cellpadding="6" nowrap bordercolor="#808080" cols="3">
 	<CFIF #session.ReportCatagory# IS "mo">
 		<TR VALIGN="BASELINE" BGCOLOR="#800000">				
@@ -90,39 +82,23 @@ LinkURL = #linkurl#<br>  --->
 		</TR>
 	</cfif>
 	<cfset hfmc = '        '>
-	
 	<CFLOOP query="contents">		
-		<CFSET FileNamex = ReplaceNOCASE("#Contents.name#", ".RTF", "")>
+		<CFSET FileNamex = Replace("#Contents.name#", ".RTF", "")>
 		<CFSET FileNamey = RemoveChars("#FileNamex#", 1, 4)>
-		<CFSET FileName = Replacenocase("#FileNamey#", "FE", "FM")>		
-		<cfif #mid(#name#, 7, 2)# is 'MO'>	<!--- This must be the FMC inventory detail --->			
-		<cfset FMC = '#session.regioncode#-#mid(Contents.name, 3, 2)#-#mid(Contents.name, 5, 2)#'>	
-
+		<CFSET FileName = Replace("#FileNamey#", "FE", "FM")>		
+		<cfif #mid(#name#, 7, 2)# is 'MO'>	<!--- This must be the FMC inventory detail --->
+			<cfset FMC = '#session.regioncode#-#mid(Contents.name, 3, 2)#-#mid(Contents.name, 5, 2)#'>		
 			<cfoutput>
 				<cfif hfmc is not '#fmc#'>
 					<cfif hfmc is not '        '>
 						</td></tr>
 					</cfif>
-					<cfquery name="getFMC" datasource="onlinereports">
-						select	* from fmsFMCTable
-						where FMCCode = '#fmc#'							
-					</cfquery>
-<!--- <cfif CGI.REMOTE_ADDR  IS NOT "" AND CGI.REMOTE_ADDR EQ "159.142.131.97">
-	<CFDUMP var="#getFMC#">
-</cfif> --->
 					<TR VALIGN="BASELINE">					
-						<TD WIDTH="15%" ALIGN="CENTER"><FONT SIZE="2">
-						<cfif session.regioncode is '01' and selected gt '03/2005'>						
-							<!--- <cfset FMCREG3 = '03-#mid(Contents.name, 3, 2)#-#mid(Contents.name, 5, 2)#'> --->
-								#FMC#
-						<cfelseif  session.regioncode is '12' >
-							<cfset FMCREG3 = '03-#mid(Contents.name, 3, 2)#-#mid(Contents.name, 5, 2)#'>
-								#FMCREG3#
-						<cfelse>
-								#FMC#
-						</cfif>	
-							</FONT></TD>
-												
+						<TD WIDTH="15%" ALIGN="CENTER"><FONT SIZE="2">#FMC#</FONT></TD>
+							<cfquery name="getFMC" datasource="onlinereports">
+								select	* from fmsFMCTable
+								where FMCCode = '#fmc#'							
+							</cfquery>					
 						<TD WIDTH="55%"><FONT SIZE="2">
 							<a href="#LinkURL##contents.name#" 
 							<CFIF #session.browserName# IS 'MSIE'>
@@ -178,9 +154,9 @@ LinkURL = #linkurl#<br>  --->
 	</CFLOOP>
 	<CFIF #CSV.RecordCount# is not 0>
 		<CFLOOP query="CSV">
-			<CFSET FileNamex = ReplaceNOCASE("#CSV.name#", ".CSV", "")>
+			<CFSET FileNamex = Replace("#CSV.name#", ".CSV", "")>
 			<CFSET FileNamey = RemoveChars("#FileNamex#", 1, 4)>
-			<CFSET FileName = Replacenocase("#FileNamey#", "FE", "FM")>
+			<CFSET FileName = Replace("#FileNamey#", "FE", "FM")>
 			<cfquery name="getreport" datasource="onlinereports">
 				select	* from fmsreportname
 				where reptfilename = '#FileName#'

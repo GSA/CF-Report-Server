@@ -1,18 +1,18 @@
 <html>
 <body>
 <cfif #reptDir# is 'OTHERS'>
-	<CFSET RootDir = "d:\reports\docs\CSC\">
+	<CFSET RootDir = "T:\reports\docs\CSC\">
 	<CFSET Directory1 = #RootDir# & #Session.NewYear#>
 	<cfdirectory action="CREATE" directory="#directory1#">
-	<CFSET RootDir = "d:\reports\docs\TASS\">
+	<CFSET RootDir = "T:\reports\docs\TASS\">
 	<CFSET Directory1 = #RootDir# & #Session.NewYear#>
 	<cfdirectory action="CREATE" directory="#directory1#">
-	<CFSET RootDir = "d:\reports\docs\SASY\">
+	<CFSET RootDir = "T:\reports\docs\SASY\">
 	<CFSET Directory1 = #RootDir# & #Session.NewYear#>
 	<cfdirectory action="CREATE" directory="#directory1#">
 	<cfset session.completeOthers = 1>
 <CFELSE>
-	<CFSET RootDir = "d:\reports\docs\#ReptDir#\">
+	<CFSET RootDir = "T:\reports\docs\#ReptDir#\">
 	<cfquery name="getdate" datasource="omc" dbtype="ODBC">
 		select * from calendar
 		where Year = #Session.NewYear# and Month_Day > 0

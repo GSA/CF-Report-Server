@@ -11,7 +11,7 @@
    
    <cfif Report_read gt 0 and Schedules_read eq 0>
 	   <!--- NGL::06/29/05::Catch !!!!!!!sasy!!!!!!! in the current line --->  
-<!--- GET /Sasy/ 2005-06-27 10:05:14 159.142.133.74 GET /SASY/2005/0624-ARBDAY-04. ----- 2005-06-27 - 2005- 0624--A-04-  --->	   
+<!--- GET /Sasy/ 2005-06-27 10:05:14 159.142.4.53 GET /SASY/2005/0624-ARBDAY-04. ----- 2005-06-27 - 2005- 0624--A-04-  --->	   
 	   <cfset read = FindNoCase("#system_read#", curLine, 1)>
 	   <!--- NGL::06/29/05::If we read sassy in the line --->
 	   <cfif read gt 0>

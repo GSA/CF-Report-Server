@@ -1,21 +1,26 @@
 <html>
 <body>
 <cfif #reptDir# is 'OTHERS'>
-	<CFSET RootDir = "d:\reports\docs\CSC\">
+	<CFSET RootDir = "T:\reports\docs\CSC\">
 	<CFSET Directory1 = #RootDir# & #Session.NewYear#>
 	<cfdirectory action="CREATE" directory="#directory1#">
-	<CFSET RootDir = "d:\reports\docs\TASS\">
+	<CFSET RootDir = "T:\reports\docs\TASS\">
 	<CFSET Directory1 = #RootDir# & #Session.NewYear#>
 	<cfdirectory action="CREATE" directory="#directory1#">
-	<CFSET RootDir = "d:\reports\docs\SASY\">
+	<CFSET RootDir = "T:\reports\docs\SASY\">
 	<CFSET Directory1 = #RootDir# & #Session.NewYear#>
 	<cfdirectory action="CREATE" directory="#directory1#">
-	<CFSET RootDir = "d:\reports\docs\FLFinancial\">
+	<CFSET RootDir = "T:\reports\docs\FLFinancial\">
 	<CFSET Directory1 = #RootDir# & #Session.NewYear#>
 	<cfdirectory action="CREATE" directory="#directory1#">
 	<cfset session.completeOthers = 1>
 <CFELSE>
-	<CFSET RootDir = "d:\reports\docs\#ReptDir#\">
+	<CFSET RootDir = "T:\reports\docs\#ReptDir#\">
+	<!--- <cfquery name="getdate" datasource="omc" dbtype="ODBC">
+		select * from calendar
+		where Year = #Session.NewYear# and Month_Day > 0
+		Order by Month, Month_Day
+	</cfquery> --->
 	<CFSET Year2 = '#right(session.NewYear, 2)#'>
 	<CFSET Directory1 = #RootDir# & #Session.NewYear#>
 	<cfoutput>#Directory1#</cfoutput><br>
@@ -37,14 +42,8 @@
 					<cfoutput>#Directory3#</cfoutput><br>
 					<DIR>
 					<cfdirectory action="CREATE" directory="#directory3#">
-					<CFIF alpha is 'F' or alpha is 'K'>
+					<CFIF alpha is 'F' or alpha is 'G' or alpha is 'K'>
 						<cfloop index="type" list="AC,IM,LM,MC,OP,PC,PR,QC,SD">
-							<CFSET Directory4 = #Directory3# & '\' & #Type#>
-							<cfoutput>#Directory4#</cfoutput><br>
-							<cfdirectory action="CREATE" directory="#directory4#">
-						</cfloop>
-					<CFELSEif alpha is 'G'>
-						<cfloop index="type" list="AC,CF,IM,LM,MC,OP,PC,PR,QC,SD">
 							<CFSET Directory4 = #Directory3# & '\' & #Type#>
 							<cfoutput>#Directory4#</cfoutput><br>
 							<cfdirectory action="CREATE" directory="#directory4#">
@@ -69,7 +68,7 @@
 		</CFLOOP>
 		<cfset session.completeFSS19 = 1>
 	<cfelseif #reptDir# is 'FMS'>
-		<CFLOOP index="Region" list="01,02,03,04,05,06,07,08,09,10,11,12">
+		<CFLOOP index="Region" list="01,02,03,04,05,06,07,08,09,10,11">
 			<CFSET Directory2 = '#Directory1#\#Region#'>
 				<cfdirectory action="CREATE" directory="#directory2#">
 			<cfoutput>#Directory2#</cfoutput><br>	

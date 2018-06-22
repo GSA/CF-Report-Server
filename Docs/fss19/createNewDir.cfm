@@ -11,7 +11,7 @@
 
 
 	<cfset julian = 0>
-	<CFSET Directory1 = "d:\Reports\Docs\fss19\2010">
+	<CFSET Directory1 = "T:\Reports\Docs\fss19\2010">
 		<cfloop Index="Month" from="1" to="12" step="1">
 			<cfset firstofmonth = #CreateDate(2010, month, 01)#>
 			<cfset timestoloop = #daysinmonth(firstofmonth)#>

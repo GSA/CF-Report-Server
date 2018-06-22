@@ -18,8 +18,8 @@
 	<cfset session.ReptYear = "#Year(Now())#">
 </cfif>
 <cfset reptyear = "#session.reptyear#">
-<CFSET ServerURL = "http://Reports.fss.gsa.gov/">
-<CFSET Home = "http://159.142.133.74:85">
+<CFSET ServerURL = "http://159.142.4.53/">
+<CFSET Home = "http://159.142.4.53:85">
 <CFINCLUDE template="_includes/basic.css">
 
 

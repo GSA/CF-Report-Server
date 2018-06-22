@@ -21,7 +21,7 @@ function LinkToSel(form)
 <CFQUERY NAME="GetLEGACY" DATASOURCE="OnlineReports">
 	SELECT *
 	FROM Systems
-	where active <> 0
+	where active = 1
 	ORDER BY legacyCode
 </CFQUERY>
 

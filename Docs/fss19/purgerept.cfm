@@ -3,9 +3,9 @@
 <HTML>
 <HEAD>
 	<TITLE>Purge Fss19 Reports History</TITLE>
-<!--- <CFSET ServerURL = "http://159.142.133.74/reports/">
-<CFSET RootDir = "d:\fss19reports\docs\"> --->
-<CFSET ServerURL = "http://159.142.133.74/reports/history/">
+<!--- <CFSET ServerURL = "http://159.142.4.53/reports/">
+<CFSET RootDir = "T:\fss19reports\docs\"> --->
+<CFSET ServerURL = "http://159.142.4.53/reports/history/">
 <CFSET RootDir = "e:\fss-19\">
 
 <CFSET Year = "1997">

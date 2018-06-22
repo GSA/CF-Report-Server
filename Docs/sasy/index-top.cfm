@@ -1,10 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 
 <HTML>
+
 <CFQUERY NAME="GetReg" DATASOURCE="onlinereports">
 	SELECT *
 	FROM SasyRegion
-	WHERE RegionNo = '#session.reptRegion#'
+	WHERE RegionNo = '#client.reptRegion#'
 </CFQUERY> 
 <HEAD>
 	<TITLE>Untitled</TITLE>
